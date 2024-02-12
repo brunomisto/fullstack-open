@@ -1,3 +1,5 @@
+import Total from "./Total";
+
 const Content = ({ parts }) => {
   return (
     <div>
@@ -6,6 +8,7 @@ const Content = ({ parts }) => {
           {part.name} {part.exercises}
         </p>
       ))}
+      <Total parts={parts} />
     </div>
   );
 };
