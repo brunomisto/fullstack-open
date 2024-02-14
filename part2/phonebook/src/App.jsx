@@ -3,19 +3,27 @@ import personServices from "./services/person";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import PersonList from "./components/PersonList";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [searchName, setSearchName] = useState("");
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     personServices.getAll().then((persons) => {
-      console.log(persons);
       setPersons(persons);
     });
   }, []);
+
+  const notificate = (message) => {
+    setNotification(message);
+    setTimeout(() => {
+      setNotification(null);
+    }, 5000);
+  };
 
   const handleDeletion = (id, name) => {
     if (confirm(`delete ${name}?`)) {
@@ -24,12 +32,9 @@ const App = () => {
           (person) => person.id !== deleted.id
         );
         setPersons(availablePersons);
+        notificate(`Deleted ${name}`);
       });
     }
-  };
-
-  const handleNewNameChange = (event) => {
-    setNewName(event.target.value);
   };
 
   const handleNewPerson = (event) => {
@@ -40,27 +45,32 @@ const App = () => {
       return;
     }
 
-    const personsNames = persons.map((person) => person.name);
-    if (personsNames.includes(newName)) {
+    const found = persons.find(
+      (person) => person.name.toLowerCase() === newName.toLowerCase()
+    );
+
+    if (found) {
       if (
         confirm(
           `${newName} is already added to the phonebook, replace the old number with a new one?`
         )
       ) {
-        const found = persons.find((person) => person.name === newName);
-
         const replacer = {
-          id: found.id,
+          ...found,
           name: newName,
           number: newNumber,
         };
 
-        personServices.update(found.id, replacer);
-        setPersons(
-          persons.map((person) => (person.id === found.id ? replacer : person))
-        );
-        setNewName("");
-        setNewNumber("");
+        personServices.update(found.id, replacer).then(() => {
+          setPersons(
+            persons.map((person) =>
+              person.id === found.id ? replacer : person
+            )
+          );
+          notificate(`Edited ${newName} number`);
+          setNewName("");
+          setNewNumber("");
+        });
       }
       return;
     }
@@ -73,17 +83,10 @@ const App = () => {
     personServices.create(newPerson).then((person) => {
       console.log(person);
       setPersons(persons.concat(person));
+      notificate(`Added ${newPerson.name}`);
       setNewName("");
       setNewNumber("");
     });
-  };
-
-  const handleNewNumberChange = (event) => {
-    setNewNumber(event.target.value);
-  };
-
-  const handleSearchNameChange = (event) => {
-    setSearchName(event.target.value);
   };
 
   const personsToShow = persons.filter((person) => {
@@ -93,14 +96,18 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter name={searchName} handleName={handleSearchNameChange} />
+      <Notification text={notification} />
+      <Filter
+        name={searchName}
+        onChange={(event) => setSearchName(event.target.value)}
+      />
       <h2>add a new</h2>
       <PersonForm
         name={newName}
         number={newNumber}
-        handleName={handleNewNameChange}
-        handleNumber={handleNewNumberChange}
-        handleNewPerson={handleNewPerson}
+        onChangeName={(event) => setNewName(event.target.value)}
+        onChangeNumber={(event) => setNewNumber(event.target.value)}
+        onSubmit={handleNewPerson}
       />
       <h2>Numbers</h2>
       <PersonList persons={personsToShow} handleDeletion={handleDeletion} />
