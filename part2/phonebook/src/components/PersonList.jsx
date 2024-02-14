@@ -1,10 +1,14 @@
 import Person from "./Person";
 
-const PersonList = ({ persons }) => {
+const PersonList = ({ persons, handleDeletion }) => {
   return (
     <div>
       {persons.map((person) => (
-        <Person key={person.name} name={person.name} number={person.number} />
+        <Person
+          key={person.id}
+          person={person}
+          handleDeletion={handleDeletion}
+        />
       ))}
     </div>
   );

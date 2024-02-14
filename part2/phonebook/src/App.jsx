@@ -17,6 +17,17 @@ const App = () => {
     });
   }, []);
 
+  const handleDeletion = (id, name) => {
+    if (confirm(`delete ${name}?`)) {
+      personServices.deleteAsset(id).then((deleted) => {
+        const availablePersons = persons.filter(
+          (person) => person.id !== deleted.id
+        );
+        setPersons(availablePersons);
+      });
+    }
+  };
+
   const handleNewNameChange = (event) => {
     setNewName(event.target.value);
   };
@@ -63,7 +74,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter name={searchName} handleNameChange={handleSearchNameChange} />
+      <Filter name={searchName} handleName={handleSearchNameChange} />
       <h2>add a new</h2>
       <PersonForm
         name={newName}
@@ -73,7 +84,7 @@ const App = () => {
         handleNewPerson={handleNewPerson}
       />
       <h2>Numbers</h2>
-      <PersonList persons={personsToShow} />
+      <PersonList persons={personsToShow} handleDeletion={handleDeletion} />
     </div>
   );
 };

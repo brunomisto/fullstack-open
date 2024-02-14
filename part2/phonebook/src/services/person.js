@@ -16,4 +16,8 @@ const update = (person) => {
     .then((response) => response.data);
 };
 
-export default { getAll, create, update };
+const deleteAsset = (id) => {
+  return axios.delete(`${baseUrl}/${id}`).then((response) => response.data);
+};
+
+export default { getAll, create, update, deleteAsset };
