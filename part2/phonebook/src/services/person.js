@@ -10,9 +10,9 @@ const create = (person) => {
   return axios.post(baseUrl, person).then((response) => response.data);
 };
 
-const update = (person) => {
+const update = (id, person) => {
   return axios
-    .put(`${baseUrl}/${person.id}`, person)
+    .put(`${baseUrl}/${id}`, person)
     .then((response) => response.data);
 };
 

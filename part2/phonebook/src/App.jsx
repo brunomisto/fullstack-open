@@ -42,7 +42,26 @@ const App = () => {
 
     const personsNames = persons.map((person) => person.name);
     if (personsNames.includes(newName)) {
-      alert(`${newName} is already added to the phonebook`);
+      if (
+        confirm(
+          `${newName} is already added to the phonebook, replace the old number with a new one?`
+        )
+      ) {
+        const found = persons.find((person) => person.name === newName);
+
+        const replacer = {
+          id: found.id,
+          name: newName,
+          number: newNumber,
+        };
+
+        personServices.update(found.id, replacer);
+        setPersons(
+          persons.map((person) => (person.id === found.id ? replacer : person))
+        );
+        setNewName("");
+        setNewNumber("");
+      }
       return;
     }
 
