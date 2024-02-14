@@ -4,6 +4,7 @@ import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import PersonList from "./components/PersonList";
 import Notification from "./components/Notification";
+import Error from "./components/Error";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -11,6 +12,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [searchName, setSearchName] = useState("");
   const [notification, setNotification] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     personServices.getAll().then((persons) => {
@@ -22,6 +24,13 @@ const App = () => {
     setNotification(message);
     setTimeout(() => {
       setNotification(null);
+    }, 5000);
+  };
+
+  const logError = (message) => {
+    setError(message);
+    setTimeout(() => {
+      setError(null);
     }, 5000);
   };
 
@@ -61,16 +70,28 @@ const App = () => {
           number: newNumber,
         };
 
-        personServices.update(found.id, replacer).then(() => {
-          setPersons(
-            persons.map((person) =>
-              person.id === found.id ? replacer : person
-            )
-          );
-          notificate(`Edited ${newName} number`);
-          setNewName("");
-          setNewNumber("");
-        });
+        personServices
+          .update(found.id, replacer)
+          .then(() => {
+            setPersons(
+              persons.map((person) =>
+                person.id === found.id ? replacer : person
+              )
+            );
+            notificate(`Edited ${newName} number`);
+            setNewName("");
+            setNewNumber("");
+          })
+          .catch(() => {
+            logError(
+              `Information of ${newName} has already been removed from server`
+            );
+            setPersons(
+              persons.filter(
+                (person) => person.name.toLowerCase() !== newName.toLowerCase()
+              )
+            );
+          });
       }
       return;
     }
@@ -96,6 +117,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Error text={error} />
       <Notification text={notification} />
       <Filter
         name={searchName}
