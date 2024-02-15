@@ -1,4 +1,17 @@
+import weatherApi from "../services/weather";
+import { useState, useEffect } from "react";
+import Weather from "./Weather";
+
 const Country = ({ country }) => {
+  const [weather, setWeather] = useState(null);
+
+  useEffect(() => {
+    const [latitude, longitude] = country.latlng;
+    weatherApi.getWeatherCondition(latitude, longitude).then((weatherObj) => {
+      setWeather(weatherObj);
+    });
+  }, [country.latlng]);
+
   return (
     <div>
       <h2>{country.name.common}</h2>
@@ -11,6 +24,7 @@ const Country = ({ country }) => {
         ))}
       </ul>
       <img src={country.flags.png} alt="" />
+      <Weather countryName={country.name.common} weather={weather} />
     </div>
   );
 };
