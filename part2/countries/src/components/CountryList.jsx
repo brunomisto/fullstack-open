@@ -1,6 +1,6 @@
 import Country from "./Country";
 
-const CountryList = ({ query, countries }) => {
+const CountryList = ({ query, countries, setCountry }) => {
   if (!countries) return;
 
   const countriesToShow = countries.filter((country) => {
@@ -26,7 +26,10 @@ const CountryList = ({ query, countries }) => {
   return (
     <ul>
       {countriesToShow.map((country) => (
-        <li key={country.flag}>{country.name.common}</li>
+        <li key={country.flag}>
+          {country.name.common}{" "}
+          <button onClick={() => setCountry(country.name.common)}>show</button>
+        </li>
       ))}
     </ul>
   );

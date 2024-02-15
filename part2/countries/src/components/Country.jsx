@@ -2,10 +2,8 @@ const Country = ({ country }) => {
   return (
     <div>
       <h2>{country.name.common}</h2>
-      <p>
-        <div>capital {country.capital[0]}</div>
-        <div>area {country.area}</div>
-      </p>
+      <div>{country.capital ? `capital ${country.capital[0]}` : ""}</div>
+      <div>area {country.area}</div>
       <h3>languages</h3>
       <ul>
         {Object.entries(country.languages).map(([abbr, language]) => (

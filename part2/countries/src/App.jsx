@@ -23,7 +23,11 @@ const App = () => {
   return (
     <div>
       <Search value={country} onChange={handleCountryChange} />
-      <CountryList query={country} countries={countries} />
+      <CountryList
+        query={country}
+        countries={countries}
+        setCountry={setCountry}
+      />
     </div>
   );
 };
