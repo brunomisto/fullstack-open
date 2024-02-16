@@ -36,12 +36,10 @@ const App = () => {
 
   const handleDeletion = (id, name) => {
     if (confirm(`delete ${name}?`)) {
-      personServices.deleteAsset(id).then((deleted) => {
-        const availablePersons = persons.filter(
-          (person) => person.id !== deleted.id
-        );
-        setPersons(availablePersons);
+      personServices.deleteAsset(id).then(() => {
+        const availablePersons = persons.filter((person) => person.id !== id);
         notificate(`Deleted ${name}`);
+        setPersons(availablePersons);
       });
     }
   };
