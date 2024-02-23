@@ -60,6 +60,38 @@ const mostBlogs = (blogs) => {
   };
 };
 
+const mostLikes = (blogs) => {
+  if (blogs.length === 0) {
+    return {};
+  }
+
+  const authors = {};
+  for (let i = 0; i < blogs.length; i += 1) {
+    const blog = blogs[i];
+    const hasAuthorName = Object.prototype.hasOwnProperty.call(authors, blog.author);
+
+    if (!hasAuthorName) {
+      authors[blog.author] = blog.likes;
+    } else {
+      authors[blog.author] += blog.likes;
+    }
+  }
+
+  const [authorName, authorLikes] = Object.entries(authors).reduce(
+    ([prevName, prevLikes], [currentName, currentLikes]) => {
+      if (currentLikes > prevLikes) {
+        return [currentName, currentLikes];
+      }
+      return [prevName, prevLikes];
+    },
+  );
+
+  return {
+    author: authorName,
+    likes: authorLikes,
+  };
+};
+
 module.exports = {
-  dummy, totalLikes, favoriteBlog, mostBlogs,
+  dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes,
 };
