@@ -101,6 +101,20 @@ describe('blog api', () => {
     assert.strictEqual(blogs.length, helper.blogs.length - 1);
   });
 
+  test('blogs are being updated', async () => {
+    const blogs = (await api.get('/api/blogs')).body;
+    const [blog] = blogs;
+
+    const response = await api
+      .put(`/api/blogs/${blog.id}`)
+      .send({ ...blog, likes: blog.likes + 1 })
+      .expect(200);
+
+    const updatedBlog = response.body;
+
+    assert.deepStrictEqual(updatedBlog, { ...blog, likes: blog.likes + 1 });
+  });
+
   after(async () => {
     await mongoose.connection.close();
   });
