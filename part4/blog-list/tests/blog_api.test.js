@@ -11,16 +11,13 @@ const mongoose = require('mongoose');
 const Blog = require('../models/blog');
 const app = require('../app');
 const helper = require('./test_helper');
-const logger = require('../utils/logger');
 
 const api = supertest(app);
 
 describe('blog api', () => {
   beforeEach(async () => {
     await Blog.deleteMany({});
-    logger.info('deleted all blogs');
     await Blog.insertMany(helper.blogs);
-    logger.info('inserted pre-defined blogs');
   });
 
   test('correct amount of blogs is returned in /api/blogs', async () => {
@@ -67,6 +64,28 @@ describe('blog api', () => {
       .send(newBlog);
 
     assert.deepStrictEqual(response.body.likes, 0);
+  });
+
+  test('server responds with 400 when title or url are omitted', async () => {
+    let newBlog = {
+      author: 'bruno',
+      url: 'https://coolblog.com',
+    };
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400);
+
+    newBlog = {
+      title: 'cool blog',
+      author: 'bruno',
+    };
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400);
   });
 
   after(async () => {
