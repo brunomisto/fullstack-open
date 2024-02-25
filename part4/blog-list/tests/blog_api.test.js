@@ -28,6 +28,12 @@ describe('blog api', () => {
     assert.strictEqual(response.body.length, helper.blogs.length);
   });
 
+  test('unique indentifier is called id', async () => {
+    const response = await api.get('/api/blogs');
+    const [firstBlog] = response.body;
+    assert(Object.prototype.hasOwnProperty.call(firstBlog, 'id'));
+  });
+
   after(async () => {
     await mongoose.connection.close();
   });
