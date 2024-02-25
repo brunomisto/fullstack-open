@@ -34,6 +34,41 @@ describe('blog api', () => {
     assert(Object.prototype.hasOwnProperty.call(firstBlog, 'id'));
   });
 
+  test('blog is added to database', async () => {
+    const newBlog = {
+      title: 'cool blog',
+      author: 'bruno',
+      url: 'https://coolblog.com',
+      likes: 3,
+    };
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/);
+
+    const response = await api.get('/api/blogs');
+    assert.strictEqual(response.body.length, helper.blogs.length + 1);
+
+    const urls = response.body.map((blog) => blog.url);
+    assert(urls.includes('https://coolblog.com'));
+  });
+
+  test('likes are defaulted to 0 when omitted', async () => {
+    const newBlog = {
+      title: 'cool blog',
+      author: 'bruno',
+      url: 'https://coolblog.com',
+    };
+
+    const response = await api
+      .post('/api/blogs')
+      .send(newBlog);
+
+    assert.deepStrictEqual(response.body.likes, 0);
+  });
+
   after(async () => {
     await mongoose.connection.close();
   });
