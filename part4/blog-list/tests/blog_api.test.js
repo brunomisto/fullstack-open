@@ -88,6 +88,19 @@ describe('blog api', () => {
       .expect(400);
   });
 
+  test('blogs are being deleted', async () => {
+    let blogs = (await api.get('/api/blogs')).body;
+    const [blog] = blogs;
+
+    await api
+      .delete(`/api/blogs/${blog.id}`)
+      .expect(200);
+
+    blogs = (await api.get('/api/blogs')).body;
+
+    assert.strictEqual(blogs.length, helper.blogs.length - 1);
+  });
+
   after(async () => {
     await mongoose.connection.close();
   });
