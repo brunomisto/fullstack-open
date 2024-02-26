@@ -1,10 +1,23 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-param-reassign */
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema(
   {
-    username: String,
-    password: String,
-    name: String,
+    username: {
+      type: String,
+      minLength: 3,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
   },
   {
     toJSON: {

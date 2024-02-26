@@ -49,4 +49,22 @@ const blogs = [
   },
 ];
 
-module.exports = { blogs };
+const users = [
+  {
+    username: 'bruno',
+    password: '123456',
+    name: 'Bruno',
+  },
+  {
+    username: 'john',
+    password: '123',
+    name: 'John',
+  },
+  {
+    username: 'foo',
+    password: '456',
+    name: 'Foo',
+  },
+];
+
+module.exports = { blogs, users };
