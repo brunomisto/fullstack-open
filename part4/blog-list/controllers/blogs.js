@@ -1,7 +1,16 @@
 const blogsRouter = require('express').Router();
+const jwt = require('jsonwebtoken');
+
 const Blog = require('../models/blog');
 const User = require('../models/user');
-const logger = require('../utils/logger');
+
+// const logger = require('../utils/logger');
+
+const getToken = (request) => {
+  const header = request.get('Authorization');
+  if (!header) return null;
+  return header.replace('Bearer ', '');
+};
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', {
@@ -14,25 +23,36 @@ blogsRouter.get('/', async (request, response) => {
 
 blogsRouter.post('/', async (request, response, next) => {
   try {
-    const randomUser = await User.findOne({});
-    logger.info(randomUser);
+    const token = getToken(request);
+    if (!token) {
+      return response
+        .status(400)
+        .json({ error: 'missing authorization header' });
+    }
+
+    const userToken = jwt.verify(token, process.env.SECRET);
+    if (!userToken) {
+      return response
+        .status(400)
+        .json({ error: 'failed authentication' });
+    }
+
+    const user = await User.findById(userToken.id);
 
     const blogObject = {
       ...request.body,
-      user: randomUser.id,
+      user: user.id,
     };
-    logger.info(blogObject);
 
     const blog = new Blog(blogObject);
-    logger.info(blog);
 
     const savedBlog = await blog.save();
-    randomUser.blogs = randomUser.blogs.concat(savedBlog);
-    await randomUser.save();
+    user.blogs = user.blogs.concat(savedBlog);
+    await user.save();
 
-    response.status(201).json(savedBlog);
+    return response.status(201).json(savedBlog);
   } catch (error) {
-    next(error);
+    return next(error);
   }
 });
 

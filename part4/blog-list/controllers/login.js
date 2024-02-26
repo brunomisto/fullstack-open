@@ -4,11 +4,8 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
 
-const logger = require('../utils/logger');
-
 loginRouter.post('/', async (request, response, next) => {
   try {
-    logger.info(request.body);
     const { username, password } = request.body;
     const user = await User.findOne({ username });
 

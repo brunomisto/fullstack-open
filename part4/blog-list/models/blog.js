@@ -30,6 +30,15 @@ blogSchema.set('toJSON', {
   },
 });
 
+blogSchema.post('save', async (document, next) => {
+  await document.populate('user', {
+    username: 1,
+    name: 1,
+    id: 1,
+  });
+  next();
+});
+
 const Blog = mongoose.model('Blog', blogSchema);
 
 module.exports = Blog;
