@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+
 // eslint-disable-next-line no-unused-vars
 const errorHandler = (error, request, response, next) => {
   switch (error.name) {
@@ -24,4 +26,12 @@ const tokenExtractor = (request, response, next) => {
   next();
 };
 
-module.exports = { errorHandler, tokenExtractor };
+const userExtractor = (request, response, next) => {
+  request.user = request.token
+    ? jwt.verify(request.token, process.env.SECRET)
+    : null;
+
+  next();
+};
+
+module.exports = { errorHandler, tokenExtractor, userExtractor };

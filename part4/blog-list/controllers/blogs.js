@@ -1,10 +1,7 @@
 const blogsRouter = require('express').Router();
-const jwt = require('jsonwebtoken');
 
 const Blog = require('../models/blog');
 const User = require('../models/user');
-
-const logger = require('../utils/logger');
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', {
@@ -17,21 +14,13 @@ blogsRouter.get('/', async (request, response) => {
 
 blogsRouter.post('/', async (request, response, next) => {
   try {
-    const { token } = request;
-    if (!token) {
+    if (!request.user) {
       return response
         .status(400)
-        .json({ error: 'missing authorization header' });
+        .json({ error: 'you need authentication to create blogs' });
     }
 
-    const userToken = jwt.verify(token, process.env.SECRET);
-    if (!userToken) {
-      return response
-        .status(400)
-        .json({ error: 'failed authentication' });
-    }
-
-    const user = await User.findById(userToken.id);
+    const user = await User.findById(request.user.id);
 
     const blogObject = {
       ...request.body,
@@ -51,14 +40,13 @@ blogsRouter.post('/', async (request, response, next) => {
 });
 
 blogsRouter.delete('/:id', async (request, response, next) => {
-  if (request.token === null) {
+  if (request.user === null) {
     return response
       .status(401)
       .json({ error: 'you need authentication to delete notes' });
   }
 
   try {
-    const { userId } = jwt.verify(request.token, process.env.SECRET);
     const blog = await Blog.findById(request.params.id);
 
     if (!blog) {
@@ -67,15 +55,14 @@ blogsRouter.delete('/:id', async (request, response, next) => {
         .json({ error: 'blog not found' });
     }
 
-    logger.info(blog);
-    if (blog.user.toString() !== userId) {
+    if (blog.user.toString() !== request.user.id) {
       return response
         .status(401)
         .json({ error: 'you\'re not the blog owner' });
     }
 
-    const deletedBlog = await blog.deleteOne();
-    return response.json(deletedBlog);
+    const blogDeletion = await blog.deleteOne();
+    return response.json(blogDeletion);
   } catch (error) {
     return next(error);
   }
