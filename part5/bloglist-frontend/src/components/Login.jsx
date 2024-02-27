@@ -1,5 +1,5 @@
 import { useState } from "react";
-import loginService from '../services/login'
+import loginService from "../services/login"
 
 const Login = ({ setUser }) => {
   const [username, setUsername] = useState("");
@@ -10,6 +10,7 @@ const Login = ({ setUser }) => {
       event.preventDefault();
       const user = await loginService.login(username, password);
       setUser(user);
+      localStorage.setItem("loggedUser", JSON.stringify(user));
     } catch {
       setUsername("");
       setPassword("");
