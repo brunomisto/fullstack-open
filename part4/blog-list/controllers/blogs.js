@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const Blog = require('../models/blog');
 const User = require('../models/user');
 
-// const logger = require('../utils/logger');
+const logger = require('../utils/logger');
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', {
@@ -50,9 +50,35 @@ blogsRouter.post('/', async (request, response, next) => {
   }
 });
 
-blogsRouter.delete('/:id', async (request, response) => {
-  const deletedNote = await Blog.findByIdAndDelete(request.params.id);
-  response.json(deletedNote);
+blogsRouter.delete('/:id', async (request, response, next) => {
+  if (request.token === null) {
+    return response
+      .status(401)
+      .json({ error: 'you need authentication to delete notes' });
+  }
+
+  try {
+    const { userId } = jwt.verify(request.token, process.env.SECRET);
+    const blog = await Blog.findById(request.params.id);
+
+    if (!blog) {
+      return response
+        .status(400)
+        .json({ error: 'blog not found' });
+    }
+
+    logger.info(blog);
+    if (blog.user.toString() !== userId) {
+      return response
+        .status(401)
+        .json({ error: 'you\'re not the blog owner' });
+    }
+
+    const deletedBlog = await blog.deleteOne();
+    return response.json(deletedBlog);
+  } catch (error) {
+    return next(error);
+  }
 });
 
 blogsRouter.put('/:id', async (request, response) => {
