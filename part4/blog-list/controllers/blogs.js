@@ -6,12 +6,6 @@ const User = require('../models/user');
 
 // const logger = require('../utils/logger');
 
-const getToken = (request) => {
-  const header = request.get('Authorization');
-  if (!header) return null;
-  return header.replace('Bearer ', '');
-};
-
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', {
     username: 1,
@@ -23,7 +17,7 @@ blogsRouter.get('/', async (request, response) => {
 
 blogsRouter.post('/', async (request, response, next) => {
   try {
-    const token = getToken(request);
+    const { token } = request;
     if (!token) {
       return response
         .status(400)

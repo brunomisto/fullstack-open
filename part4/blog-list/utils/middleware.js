@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 const errorHandler = (error, request, response, next) => {
   switch (error.name) {
     case 'ValidationError':
@@ -15,4 +16,12 @@ const errorHandler = (error, request, response, next) => {
   }
 };
 
-module.exports = { errorHandler };
+const tokenExtractor = (request, response, next) => {
+  const header = request.get('Authorization');
+  request.token = header
+    ? header.replace('Bearer ', '')
+    : null;
+  next();
+};
+
+module.exports = { errorHandler, tokenExtractor };
