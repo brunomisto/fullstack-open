@@ -14,15 +14,17 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [notification, setNotification] = useState(null);
 
+  const updateBlogs = async () => {
+    const newBlogs = await blogService.getAll();
+    setBlogs(newBlogs);
+  };
+
   useEffect(() => {
     const loggedUser = localStorage.getItem("loggedUser");
     if (loggedUser) {
       setUser(JSON.parse(loggedUser));
     }
-    blogService.getAll().then((blogs) => {
-      console.log(blogs)
-      setBlogs(blogs)
-    });
+    updateBlogs();
   }, [])
 
   const logInfo = (message) => {
@@ -77,7 +79,7 @@ const App = () => {
         <NewBlog createBlog={createBlog} />
       </Togglable>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} updateBlogs={updateBlogs} />
       )}
     </div>
   )
