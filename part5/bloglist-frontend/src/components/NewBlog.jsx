@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-const NewBlog = ({ createBlog }) => {
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
+function NewBlog({ createBlog }) {
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
+  const [url, setUrl] = useState('');
 
   return (
     <div>
@@ -13,34 +13,35 @@ const NewBlog = ({ createBlog }) => {
         await createBlog({
           title,
           author,
-          url
+          url,
         });
-        setTitle("");
-        setAuthor("");
-        setUrl("");
-      }}>
+        setTitle('');
+        setAuthor('');
+        setUrl('');
+      }}
+      >
         <div>
           <label>
             title:
-            <input value={title} onChange={({target}) => setTitle(target.value)} />
+            <input value={title} onChange={({ target }) => setTitle(target.value)} />
           </label>
         </div>
         <div>
           <label>
             author:
-            <input value={author} onChange={({target}) => setAuthor(target.value)} />
+            <input value={author} onChange={({ target }) => setAuthor(target.value)} />
           </label>
         </div>
         <div>
           <label>
             url:
-            <input value={url} onChange={({target}) => setUrl(target.value)} />
+            <input value={url} onChange={({ target }) => setUrl(target.value)} />
           </label>
         </div>
         <button type="submit">add</button>
       </form>
     </div>
-  )
-};
+  );
+}
 
 export default NewBlog;

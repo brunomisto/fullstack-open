@@ -1,13 +1,13 @@
-const Notification = ({ notification }) => {
+function Notification({ notification }) {
   if (notification === null) {
-    return
+    return null;
   }
-  
+
   return (
     <div className={`notification ${notification.type}`}>
       {notification.message}
     </div>
-  )
+  );
 }
 
 export default Notification;
