@@ -19,9 +19,10 @@ const App = () => {
     if (loggedUser) {
       setUser(JSON.parse(loggedUser));
     }
-    blogService.getAll().then((blogs) =>
+    blogService.getAll().then((blogs) => {
+      console.log(blogs)
       setBlogs(blogs)
-    )
+    });
   }, [])
 
   const logInfo = (message) => {
