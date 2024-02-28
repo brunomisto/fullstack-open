@@ -58,27 +58,23 @@ const App = () => {
     }
   }
 
-  if (user) {
+  if (user === null) {
     return (
       <div>
-        {
-          notification
-          ? <Notification notification={notification} />
-          : "" 
-        }
-        <h2>blogs</h2>
-        <p>{user.name} logged in</p> <button onClick={handleLogout}>logout</button>
-        <NewBlog createBlog={createBlog} />
-        {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
-        )}
+        <Login setUser={setUser} />
       </div>
     )
   }
-
+  
   return (
     <div>
-      <Login setUser={setUser} />
+      <Notification notification={notification} />
+      <h2>blogs</h2>
+      <p>{user.name} logged in</p> <button onClick={handleLogout}>logout</button>
+      <NewBlog createBlog={createBlog} />
+      {blogs.map(blog =>
+        <Blog key={blog.id} blog={blog} />
+      )}
     </div>
   )
 }
