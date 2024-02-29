@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { React, useState } from 'react';
 
+import Like from './Like';
+
 function Blog({ blog, updateBlogs, user }) {
   const [isShowing, setIsShowing] = useState(false);
   const toggleIsShowing = () => {
@@ -42,7 +44,7 @@ function Blog({ blog, updateBlogs, user }) {
         <div>{blog.url}</div>
         <div>{`likes ${blog.likes}`}</div>
         <div>
-          <button onClick={handleLike}>like</button>
+          <Like onClick={handleLike} />
         </div>
         {blog.user ? blog.user.name : ''}
         {user.username === blog.user.username ? (

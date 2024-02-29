@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState } from 'react';
 
 function NewBlog({ createBlog }) {
@@ -23,19 +24,19 @@ function NewBlog({ createBlog }) {
         <div>
           <label>
             title:
-            <input value={title} onChange={({ target }) => setTitle(target.value)} />
+            <input value={title} onChange={({ target }) => setTitle(target.value)} placeholder="blog title..." />
           </label>
         </div>
         <div>
           <label>
             author:
-            <input value={author} onChange={({ target }) => setAuthor(target.value)} />
+            <input value={author} onChange={({ target }) => setAuthor(target.value)} placeholder="blog author..." />
           </label>
         </div>
         <div>
           <label>
             url:
-            <input value={url} onChange={({ target }) => setUrl(target.value)} />
+            <input value={url} onChange={({ target }) => setUrl(target.value)} placeholder="blog url..." />
           </label>
         </div>
         <button type="submit">add</button>
