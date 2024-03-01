@@ -65,7 +65,8 @@ function App() {
   if (user === null) {
     return (
       <div>
-        <Login setUser={setUser} />
+        <Notification notification={notification} />
+        <Login setUser={setUser} logInfo={logInfo} logError={logError} />
       </div>
     );
   }
@@ -83,7 +84,9 @@ function App() {
       </Togglable>
       {blogs.toSorted((a, b) => (
         b.likes - a.likes
-      )).map((blog) => <Blog key={blog.id} blog={blog} updateBlogs={updateBlogs} user={user} />)}
+      )).map((blog) => (
+        <Blog key={blog.id} blog={blog} updateBlogs={updateBlogs} user={user} />
+      ))}
     </div>
   );
 }
