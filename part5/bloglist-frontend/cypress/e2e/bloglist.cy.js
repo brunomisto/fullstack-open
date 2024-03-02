@@ -84,5 +84,33 @@ describe('Blog app', () => {
         .its('body.length')
         .should('eq', 1);
     });
+
+    describe('when user creates 1 blog', () => {
+      beforeEach(() => {
+        const blog = {
+          title: 'a cool blog',
+          author: 'someone',
+          url: 'http://blog.com',
+        };
+
+        cy.request({
+          url: `${Cypress.env('BACKEND')}/blogs`,
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem('loggedUser')).token}`,
+          },
+          body: blog,
+        })
+          .then(() => {
+            cy.visit('');
+          });
+      });
+
+      it('a blog can be liked', () => {
+        cy.contains('view').click();
+        cy.get('.like-button').click();
+        cy.contains('likes 1');
+      });
+    });
   });
 });
