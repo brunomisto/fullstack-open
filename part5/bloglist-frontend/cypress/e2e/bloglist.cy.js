@@ -1,4 +1,4 @@
-// Reminder, use function() instead of ()=> if willing to use 'this'
+// Reminder: use function() instead of ()=> if willing to use 'this'
 
 describe('Blog app', () => {
   beforeEach(() => {
@@ -110,6 +110,12 @@ describe('Blog app', () => {
         cy.contains('view').click();
         cy.get('.like-button').click();
         cy.contains('likes 1');
+      });
+
+      it('a blog can be deleted', () => {
+        cy.contains('view').click();
+        cy.contains('delete').click();
+        cy.get('html').should('not.contain', 'a cool blog someone');
       });
     });
   });
