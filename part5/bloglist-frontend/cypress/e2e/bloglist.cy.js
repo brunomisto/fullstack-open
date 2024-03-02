@@ -93,14 +93,7 @@ describe('Blog app', () => {
           url: 'http://blog.com',
         };
 
-        cy.request({
-          url: `${Cypress.env('BACKEND')}/blogs`,
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${JSON.parse(localStorage.getItem('loggedUser')).token}`,
-          },
-          body: blog,
-        })
+        cy.createBlog(blog)
           .then(() => {
             cy.visit('');
           });
@@ -134,6 +127,43 @@ describe('Blog app', () => {
         });
         cy.contains('view').click();
         cy.get('html').should('not.contain', 'delete');
+      });
+    });
+
+    describe('when multiple blogs are created', () => {
+      beforeEach(() => {
+        const baseBlog = {
+          title: 'some blog',
+          author: 'someone',
+          url: 'http://blog.com',
+          likes: 0,
+        };
+
+        cy.createBlog({
+          ...baseBlog,
+          title: 'most liked blog',
+          likes: 10,
+        });
+
+        cy.createBlog({
+          ...baseBlog,
+          title: 'second most liked blog',
+          likes: 5,
+        });
+
+        cy.createBlog({
+          ...baseBlog,
+          title: 'least liked blog',
+          likes: 0,
+        });
+
+        cy.visit('');
+      });
+
+      it('blogs are ordered by likes', () => {
+        cy.get('.blog').eq(0).should('contain', 'most liked blog');
+        cy.get('.blog').eq(1).should('contain', 'second most liked blog');
+        cy.get('.blog').eq(2).should('contain', 'least liked blog');
       });
     });
   });
