@@ -117,6 +117,24 @@ describe('Blog app', () => {
         cy.contains('delete').click();
         cy.get('html').should('not.contain', 'a cool blog someone');
       });
+
+      it('only blog creator can see delete button', () => {
+        cy.contains('view').click();
+        cy.contains('delete');
+        const user = {
+          username: 'newguy',
+          password: '12345',
+          name: 'new guy',
+        };
+
+        cy.register(user);
+        cy.login({
+          username: user.username,
+          password: user.password,
+        });
+        cy.contains('view').click();
+        cy.get('html').should('not.contain', 'delete');
+      });
     });
   });
 });
