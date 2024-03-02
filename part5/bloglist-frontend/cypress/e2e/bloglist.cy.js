@@ -1,50 +1,88 @@
-describe('Blog app', function() {
-  beforeEach(function() {
-    cy.request('POST', 'http://localhost:3001/api/testing/reset')
-    cy.request('POST', 'http://localhost:3001/api/users/', {
+// Reminder, use function() instead of ()=> if willing to use 'this'
+
+describe('Blog app', () => {
+  beforeEach(() => {
+    cy.resetDB();
+    cy.register({
       username: 'bruno',
       password: '12345',
       name: 'bruno misto',
     });
-    cy.visit('http://localhost:5173')
-  })
+    cy.visit('');
+  });
 
-  it('Login form is shown', function() {
+  it('Login form is shown', () => {
     cy.get('h2').should('contain', 'Login');
     cy.contains('username');
     cy.contains('password');
     cy.get('button').should('contain', 'Login');
-  })
+  });
 
-  describe('Login',function() {
-    it('succeeds with correct credentials', function() {
+  describe('Login', () => {
+    it('succeeds with correct credentials', () => {
       cy.get('#username')
-        .type('bruno')
+        .type('bruno');
 
       cy.get('#password')
-        .type('12345')
+        .type('12345');
 
-      cy.get('#login').click()
+      cy.get('#login').click();
 
-      cy.get('h2').should('contain', 'blogs')
-    })
+      cy.get('h2').should('contain', 'blogs');
+    });
 
-    it('fails with wrong credentials', function() {
+    it('fails with wrong credentials', () => {
       cy.get('#username')
         .as('usernameInput')
-        .type('bruno')
+        .type('bruno');
 
       cy.get('#password')
         .as('passwordInput')
-        .type('wrong')
+        .type('wrong');
 
-      cy.get('#login').click()
+      cy.get('#login').click();
 
-      cy.get('@usernameInput').should('have.value', '')
-      cy.get('@passwordInput').should('have.value', '')
+      cy.get('@usernameInput').should('have.value', '');
+      cy.get('@passwordInput').should('have.value', '');
 
       cy.contains('invalid username/password')
-        .should('have.css', 'border-color', 'rgb(255, 0, 0)')
-    })
-  })
-})
+        .should('have.css', 'border-color', 'rgb(255, 0, 0)');
+    });
+  });
+
+  describe('When logged in', () => {
+    beforeEach(() => {
+      cy.login({
+        username: 'bruno',
+        password: '12345',
+      });
+    });
+
+    it('A blog can be created', () => {
+      cy.contains('new blog')
+        .click();
+
+      const blog = {
+        title: 'a cool blog',
+        author: 'someone',
+        url: 'http://blog.com',
+      };
+
+      cy.get('#title')
+        .type(blog.title);
+
+      cy.get('#author')
+        .type(blog.author);
+
+      cy.get('#url')
+        .type(blog.url);
+
+      cy.contains('add')
+        .click();
+
+      cy.request(`${Cypress.env('BACKEND')}/blogs`)
+        .its('body.length')
+        .should('eq', 1);
+    });
+  });
+});

@@ -3,6 +3,7 @@ module.exports = {
     browser: true,
     es2021: true,
     'jest/globals': true,
+    'cypress/globals': true,
   },
   extends: 'airbnb',
   overrides: [
@@ -22,6 +23,9 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
+  plugins: [
+    'jest', 'cypress',
+  ],
   rules: {
     'react/react-in-jsx-scope': 0,
     'react/button-has-type': 0,
