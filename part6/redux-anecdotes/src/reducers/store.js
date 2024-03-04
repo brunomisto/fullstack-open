@@ -45,8 +45,21 @@ const anecdotesSlice = createSlice({
   },
 });
 
+const notificationSlice = createSlice({
+  name: "notification",
+  initialState: null,
+  reducers: {
+    setNotification(state, action) {
+      return action.payload;
+    },
+  },
+});
+
 export const filterReducer = filterSlice.reducer;
 export const { changeFilter } = filterSlice.actions;
 
 export const anecdotesReducer = anecdotesSlice.reducer;
 export const { addVote, createAnecdote } = anecdotesSlice.actions;
+
+export const notificationReducer = notificationSlice.reducer;
+export const { setNotification } = notificationSlice.actions;
