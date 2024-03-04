@@ -52,6 +52,9 @@ const notificationSlice = createSlice({
     setNotification(state, action) {
       return action.payload;
     },
+    removeNotification() {
+      return null;
+    },
   },
 });
 
@@ -62,4 +65,5 @@ export const anecdotesReducer = anecdotesSlice.reducer;
 export const { addVote, createAnecdote } = anecdotesSlice.actions;
 
 export const notificationReducer = notificationSlice.reducer;
-export const { setNotification } = notificationSlice.actions;
+export const { setNotification, removeNotification } =
+  notificationSlice.actions;
