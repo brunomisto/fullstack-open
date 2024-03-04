@@ -3,7 +3,9 @@ import Anecdote from "./Anecdote";
 
 const AnecdoteList = () => {
   const anecdotes = useSelector((state) =>
-    state.toSorted((first, second) => second.votes - first.votes)
+    state.anecdotes
+      .toSorted((first, second) => second.votes - first.votes)
+      .filter((anecdote) => anecdote.content.includes(state.filter))
   );
 
   return (
