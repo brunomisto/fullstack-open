@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
-import { addVote } from "../reducers/anecdoteReducer";
+import { addVote } from "../reducers/store";
+import PropTypes from "prop-types";
 
 const Anecdote = ({ anecdote }) => {
   const dispatch = useDispatch();
@@ -17,6 +18,10 @@ const Anecdote = ({ anecdote }) => {
       </div>
     </div>
   );
+};
+
+Anecdote.propTypes = {
+  anecdote: PropTypes.object.isRequired,
 };
 
 export default Anecdote;
