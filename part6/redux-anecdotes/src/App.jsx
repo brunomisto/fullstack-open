@@ -2,7 +2,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { addVote, createAnecdote } from "./reducers/anecdoteReducer";
 
 const App = () => {
-  const anecdotes = useSelector((state) => state);
+  const anecdotes = useSelector((state) =>
+    state.toSorted((first, second) => second.votes - first.votes)
+  );
   const dispatch = useDispatch();
 
   const vote = (id) => {
@@ -31,7 +33,7 @@ const App = () => {
       <h2>create new</h2>
       <form onSubmit={create}>
         <div>
-          <input id="content" />
+          <input id="content" required />
         </div>
         <button>create</button>
       </form>
