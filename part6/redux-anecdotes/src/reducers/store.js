@@ -10,16 +10,6 @@ const filterSlice = createSlice({
   },
 });
 
-const getId = () => (100000 * Math.random()).toFixed(0);
-
-const asObject = (anecdote) => {
-  return {
-    content: anecdote,
-    id: getId(),
-    votes: 0,
-  };
-};
-
 const anecdotesSlice = createSlice({
   name: "anecdote",
   initialState: [],
@@ -30,8 +20,7 @@ const anecdotesSlice = createSlice({
       anecdote.votes += 1;
     },
     createAnecdote(state, action) {
-      const content = action.payload;
-      state.push(asObject(content));
+      state.push(action.payload);
     },
     setAnecdotes(state, action) {
       return action.payload;
