@@ -1,24 +1,13 @@
 import { useDispatch } from "react-redux";
-import {
-  addVote,
-  removeNotification,
-  setNotification,
-} from "../reducers/store";
+import { addVote, setNotification } from "../reducers/store";
 import PropTypes from "prop-types";
 
 const Anecdote = ({ anecdote }) => {
   const dispatch = useDispatch();
 
-  const showNotification = (content) => {
-    dispatch(setNotification(content));
-    setTimeout(() => {
-      dispatch(removeNotification());
-    }, 5000);
-  };
-
   const vote = (anecdote) => {
     dispatch(addVote(anecdote.id));
-    showNotification(`you voted '${anecdote.content}'`);
+    dispatch(setNotification(`you voted '${anecdote.content}'`));
   };
 
   return (

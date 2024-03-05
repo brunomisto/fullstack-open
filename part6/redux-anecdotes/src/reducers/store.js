@@ -34,10 +34,10 @@ const notificationSlice = createSlice({
   name: "notification",
   initialState: null,
   reducers: {
-    setNotification(state, action) {
+    setMessage(state, action) {
       return action.payload;
     },
-    removeNotification() {
+    clearMessage() {
       return null;
     },
   },
@@ -66,6 +66,12 @@ export const addVote = (id) => async (dispatch) => {
 
 export const anecdotesReducer = anecdotesSlice.reducer;
 
-export const { setNotification, removeNotification } =
-  notificationSlice.actions;
+export const { setMessage, clearMessage } = notificationSlice.actions;
+export const setNotification = (message, time) => (dispatch) => {
+  dispatch(setMessage(message));
+  setTimeout(() => {
+    clearMessage();
+  }, time);
+};
+
 export const notificationReducer = notificationSlice.reducer;
