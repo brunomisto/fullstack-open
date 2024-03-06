@@ -24,6 +24,18 @@ const AnecdoteForm = () => {
         });
       }, 5000);
     },
+    onError: () => {
+      // Hardcoded notification
+      dispathNotification({
+        type: "NOTIFICATE",
+        payload: "too short anecdote, must have length 5 or more",
+      });
+      setTimeout(() => {
+        dispathNotification({
+          type: "CLEAR_NOTIFICATION",
+        });
+      }, 5000);
+    },
   });
 
   const onCreate = (event) => {
