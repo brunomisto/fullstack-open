@@ -4,4 +4,7 @@ const baseUrl = "http://localhost:3001/anecdotes";
 
 const getAll = () => axios.get(baseUrl).then((response) => response.data);
 
-export default { getAll };
+const create = (anecdote) =>
+  axios.post(baseUrl, anecdote).then((response) => response.data);
+
+export default { getAll, create };
