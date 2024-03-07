@@ -85,19 +85,26 @@ const Footer = () => (
 
 const CreateNew = ({ addNew, setNotification }) => {
   const navigate = useNavigate();
-  const content = useField("");
-  const author = useField("");
-  const info = useField("");
+  const [content, resetContent] = useField("text");
+  const [author, resetAuthor] = useField("text");
+  const [info, resetInfo] = useField("text");
+
+  const resetFields = (event) => {
+    event.preventDefault();
+    resetContent();
+    resetAuthor();
+    resetInfo();
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     addNew({
-      content,
-      author,
-      info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0,
     });
-    setNotification(`a new anecdote ${content} created!`);
+    setNotification(`a new anecdote ${content.value} created!`);
     setTimeout(() => {
       setNotification("");
     }, 5000);
@@ -121,6 +128,7 @@ const CreateNew = ({ addNew, setNotification }) => {
           <input {...info} />
         </div>
         <button>create</button>
+        <button onClick={resetFields}>reset</button>
       </form>
     </div>
   );
