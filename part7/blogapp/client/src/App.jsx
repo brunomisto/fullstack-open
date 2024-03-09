@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Blog from "./components/Blog";
@@ -9,24 +9,21 @@ import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
 import { setNotification } from "./reducers/notificationReducer";
 import { initBlogs } from "./reducers/blogsReducer";
+import { initUser } from "./reducers/userReducer";
 import "./App.css";
 
 function App() {
   const dispatch = useDispatch();
   const blogs = useSelector(({ blogs }) => blogs);
-  const [user, setUser] = useState(null);
+  const user = useSelector(({ user }) => user);
 
   useEffect(() => {
-    const loggedUser = localStorage.getItem("loggedUser");
-    if (loggedUser) {
-      setUser(JSON.parse(loggedUser));
-    }
+    dispatch(initUser());
     dispatch(initBlogs());
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("loggedUser");
-    setUser(null);
+    dispatch({ type: "user/logout" });
   };
 
   const createBlog = async (blog) => {
@@ -48,11 +45,11 @@ function App() {
     }
   };
 
-  if (user === null) {
+  if (!user) {
     return (
       <div>
         <Notification />
-        <Login setUser={setUser} />
+        <Login />
       </div>
     );
   }
