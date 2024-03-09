@@ -1,7 +1,11 @@
 import { useState } from "react";
-import loginService from "../services/login";
+import { useDispatch } from "react-redux";
 
-function Login({ setUser, logInfo, logError }) {
+import loginService from "../services/login";
+import { setNotification } from "../reducers/notificationReducer";
+
+function Login({ setUser }) {
+  const dispatch = useDispatch();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -11,11 +15,11 @@ function Login({ setUser, logInfo, logError }) {
       const user = await loginService.login(username, password);
       setUser(user);
       localStorage.setItem("loggedUser", JSON.stringify(user));
-      logInfo(`${user.name} logged in`);
+      dispatch(setNotification(`${user.name} logged in`, "info", 5));
     } catch (error) {
       setUsername("");
       setPassword("");
-      logError(error.response.data.error);
+      dispatch(setNotification(error.response.data.error, "error", 5));
     }
   };
 

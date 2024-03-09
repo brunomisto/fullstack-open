@@ -1,4 +1,8 @@
-function Notification({ notification }) {
+import { useSelector } from "react-redux";
+
+function Notification() {
+  const notification = useSelector(({ notification }) => notification);
+
   if (notification === null) {
     return null;
   }

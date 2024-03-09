@@ -1,18 +1,19 @@
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+
 import Blog from "./components/Blog";
 import Login from "./components/Login";
 import NewBlog from "./components/NewBlog";
 import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
-
 import blogService from "./services/blogs";
-
+import { setNotification } from "./reducers/notificationReducer";
 import "./App.css";
 
 function App() {
+  const dispatch = useDispatch();
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
-  const [notification, setNotification] = useState(null);
 
   const updateBlogs = async () => {
     const newBlogs = await blogService.getAll();
@@ -27,26 +28,6 @@ function App() {
     updateBlogs();
   }, []);
 
-  const logInfo = (message) => {
-    setNotification({
-      message,
-      type: "info",
-    });
-    setTimeout(() => {
-      setNotification(null);
-    }, 5000);
-  };
-
-  const logError = (message) => {
-    setNotification({
-      message,
-      type: "error",
-    });
-    setTimeout(() => {
-      setNotification(null);
-    }, 5000);
-  };
-
   const handleLogout = () => {
     localStorage.removeItem("loggedUser");
     setUser(null);
@@ -56,24 +37,30 @@ function App() {
     try {
       const createdBlog = await blogService.create(blog, user.token);
       setBlogs(blogs.concat(createdBlog));
-      logInfo(`a new blog ${createdBlog.title} by ${createdBlog.author} added`);
+      dispatch(
+        setNotification(
+          `a new blog ${createdBlog.title} by ${createdBlog.author} added`,
+          "info",
+          5,
+        ),
+      );
     } catch (error) {
-      logError(error.response.data.error);
+      dispatch(setNotification(error.response.data.error, "error", 5));
     }
   };
 
   if (user === null) {
     return (
       <div>
-        <Notification notification={notification} />
-        <Login setUser={setUser} logInfo={logInfo} logError={logError} />
+        <Notification />
+        <Login setUser={setUser} />
       </div>
     );
   }
 
   return (
     <div>
-      <Notification notification={notification} />
+      <Notification />
       <h2>blogs</h2>
       <p>{`${user.name} logged in`}</p>
       <button onClick={handleLogout}>logout</button>
