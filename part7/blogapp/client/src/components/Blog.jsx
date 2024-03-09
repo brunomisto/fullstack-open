@@ -1,9 +1,11 @@
-import axios from "axios";
 import { React, useState } from "react";
-
+import { useDispatch } from "react-redux";
+import { likeBlog, deleteBlog } from "../reducers/blogsReducer";
 import Like from "./Like";
 
-function Blog({ blog, updateBlogs, user }) {
+function Blog({ blog, user }) {
+  const dispatch = useDispatch();
+
   const [isShowing, setIsShowing] = useState(false);
   const toggleIsShowing = () => {
     setIsShowing(!isShowing);
@@ -15,25 +17,13 @@ function Blog({ blog, updateBlogs, user }) {
     marginBottom: 5,
   };
 
-  const handleLike = async () => {
-    await axios.put(`/api/blogs/${blog.id}`, {
-      ...blog,
-      user: blog.user.id,
-      likes: blog.likes + 1,
-    });
-
-    updateBlogs();
+  const handleLike = () => {
+    dispatch(likeBlog(blog));
   };
 
   const handleDelete = async () => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
-      await axios.delete(`/api/blogs/${blog.id}`, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
-
-      updateBlogs();
+      dispatch(deleteBlog(blog, user.token));
     }
   };
 
@@ -46,7 +36,7 @@ function Blog({ blog, updateBlogs, user }) {
         <div>
           <Like onClick={handleLike} />
         </div>
-        {blog.user ? blog.user.name : ""}
+        {blog.user && blog.user.name}
         {user.username === blog.user.username ? (
           <div>
             <button onClick={handleDelete}>delete</button>
