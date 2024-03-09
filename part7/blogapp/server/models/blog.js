@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-param-reassign */
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const blogSchema = new mongoose.Schema({
   title: {
@@ -10,7 +10,7 @@ const blogSchema = new mongoose.Schema({
   author: String,
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: "User",
   },
   url: {
     type: String,
@@ -22,7 +22,7 @@ const blogSchema = new mongoose.Schema({
   },
 });
 
-blogSchema.set('toJSON', {
+blogSchema.set("toJSON", {
   transform: (document, returnObject) => {
     returnObject.id = returnObject._id;
     delete returnObject._id;
@@ -30,8 +30,8 @@ blogSchema.set('toJSON', {
   },
 });
 
-blogSchema.post('save', async (document, next) => {
-  await document.populate('user', {
+blogSchema.post("save", async (document, next) => {
+  await document.populate("user", {
     username: 1,
     name: 1,
     id: 1,
@@ -39,6 +39,6 @@ blogSchema.post('save', async (document, next) => {
   next();
 });
 
-const Blog = mongoose.model('Blog', blogSchema);
+const Blog = mongoose.model("Blog", blogSchema);
 
 module.exports = Blog;

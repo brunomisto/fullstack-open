@@ -1,7 +1,7 @@
-import axios from 'axios';
-import { React, useState } from 'react';
+import axios from "axios";
+import { React, useState } from "react";
 
-import Like from './Like';
+import Like from "./Like";
 
 function Blog({ blog, updateBlogs, user }) {
   const [isShowing, setIsShowing] = useState(false);
@@ -11,7 +11,7 @@ function Blog({ blog, updateBlogs, user }) {
 
   const blogStyle = {
     padding: 10,
-    border: '1px solid black',
+    border: "1px solid black",
     marginBottom: 5,
   };
 
@@ -46,13 +46,13 @@ function Blog({ blog, updateBlogs, user }) {
         <div>
           <Like onClick={handleLike} />
         </div>
-        {blog.user ? blog.user.name : ''}
+        {blog.user ? blog.user.name : ""}
         {user.username === blog.user.username ? (
           <div>
             <button onClick={handleDelete}>delete</button>
           </div>
         ) : (
-          ''
+          ""
         )}
       </div>
     );
@@ -63,7 +63,7 @@ function Blog({ blog, updateBlogs, user }) {
   return (
     <div className="blog" style={blogStyle}>
       {`${blog.title} ${blog.author}`}
-      <button onClick={toggleIsShowing}>{isShowing ? 'hide' : 'view'}</button>
+      <button onClick={toggleIsShowing}>{isShowing ? "hide" : "view"}</button>
       {content}
     </div>
   );

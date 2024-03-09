@@ -1,14 +1,14 @@
-const usersRouter = require('express').Router();
-const bcrypt = require('bcrypt');
-const User = require('../models/user');
+const usersRouter = require("express").Router();
+const bcrypt = require("bcrypt");
+const User = require("../models/user");
 
-usersRouter.post('/', async (request, response, next) => {
+usersRouter.post("/", async (request, response, next) => {
   try {
     const { username, password, name } = request.body;
 
     if (password.length < 3) {
       response.status(400);
-      response.json({ error: 'password must be at least 3 characters long' });
+      response.json({ error: "password must be at least 3 characters long" });
       return;
     }
 
@@ -27,8 +27,8 @@ usersRouter.post('/', async (request, response, next) => {
   }
 });
 
-usersRouter.get('/', async (request, response) => {
-  const users = await User.find({}).populate('blogs', {
+usersRouter.get("/", async (request, response) => {
+  const users = await User.find({}).populate("blogs", {
     url: 1,
     title: 1,
     author: 1,

@@ -36,7 +36,10 @@ const mostBlogs = (blogs) => {
   const authors = {};
   for (let i = 0; i < blogs.length; i += 1) {
     const blog = blogs[i];
-    const hasAuthorName = Object.prototype.hasOwnProperty.call(authors, blog.author);
+    const hasAuthorName = Object.prototype.hasOwnProperty.call(
+      authors,
+      blog.author,
+    );
 
     if (!hasAuthorName) {
       authors[blog.author] = 1;
@@ -68,7 +71,10 @@ const mostLikes = (blogs) => {
   const authors = {};
   for (let i = 0; i < blogs.length; i += 1) {
     const blog = blogs[i];
-    const hasAuthorName = Object.prototype.hasOwnProperty.call(authors, blog.author);
+    const hasAuthorName = Object.prototype.hasOwnProperty.call(
+      authors,
+      blog.author,
+    );
 
     if (!hasAuthorName) {
       authors[blog.author] = blog.likes;
@@ -93,5 +99,9 @@ const mostLikes = (blogs) => {
 };
 
 module.exports = {
-  dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes,
+  dummy,
+  totalLikes,
+  favoriteBlog,
+  mostBlogs,
+  mostLikes,
 };

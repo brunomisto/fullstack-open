@@ -1,17 +1,17 @@
-import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import "@testing-library/jest-dom";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
-import Blog from './Blog';
+import Blog from "./Blog";
 
 const blog = {
-  title: 'my cool blog',
-  author: 'robert de niro',
+  title: "my cool blog",
+  author: "robert de niro",
   likes: 2,
-  url: 'http://blog.com',
+  url: "http://blog.com",
 };
 
-test('render only title and author by default', () => {
+test("render only title and author by default", () => {
   render(<Blog blog={blog} />);
 
   const titleAuthor = screen.findByText(`${blog.title} ${blog.author}`);
@@ -23,12 +23,12 @@ test('render only title and author by default', () => {
   expect(likes).toBeNull();
 });
 
-test('url and likes are shown when show button clicked', () => {
+test("url and likes are shown when show button clicked", () => {
   render(<Blog blog={blog} />);
 
   const user = userEvent.setup();
 
-  const button = screen.queryByText('show');
+  const button = screen.queryByText("show");
   user.click(button);
 
   const url = screen.queryByText(blog.url);

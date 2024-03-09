@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
-import { useState } from 'react';
+import PropTypes from "prop-types";
+import { useState } from "react";
 
 function Togglable({ label, children }) {
   const [visible, setVisible] = useState(false);

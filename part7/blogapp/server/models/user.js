@@ -1,13 +1,13 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-param-reassign */
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
   {
     blogs: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Blog',
+        ref: "Blog",
       },
     ],
     username: {
@@ -37,6 +37,6 @@ const userSchema = new mongoose.Schema(
   },
 );
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;

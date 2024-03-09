@@ -1,23 +1,27 @@
-const { test, describe } = require('node:test');
-const assert = require('node:assert');
+const { test, describe } = require("node:test");
+const assert = require("node:assert");
 const {
-  favoriteBlog, mostBlogs, mostLikes, totalLikes, dummy,
-} = require('../utils/list_helper');
-const helper = require('./test_helper');
+  favoriteBlog,
+  mostBlogs,
+  mostLikes,
+  totalLikes,
+  dummy,
+} = require("../utils/list_helper");
+const helper = require("./test_helper");
 
-describe('list helper', () => {
-  describe('dummy', () => {
-    test('returns 1', () => {
+describe("list helper", () => {
+  describe("dummy", () => {
+    test("returns 1", () => {
       assert.strictEqual(dummy(), 1);
     });
   });
 
-  describe('favorite blog', () => {
-    test('empty list will return empty object', () => {
+  describe("favorite blog", () => {
+    test("empty list will return empty object", () => {
       assert.deepStrictEqual(favoriteBlog([]), {});
     });
 
-    test('list with one blog return the unique blog', () => {
+    test("list with one blog return the unique blog", () => {
       const blogs = [helper.blogs[0]];
 
       const expectedBlog = {
@@ -29,7 +33,7 @@ describe('list helper', () => {
       assert.deepStrictEqual(favoriteBlog(blogs), expectedBlog);
     });
 
-    test('list of blogs returns most liked', () => {
+    test("list of blogs returns most liked", () => {
       const { title, author, likes } = helper.blogs[2];
       const expectedBlog = { title, author, likes };
 
@@ -37,12 +41,12 @@ describe('list helper', () => {
     });
   });
 
-  describe('most blogs', () => {
-    test('empty list returns empty object', () => {
+  describe("most blogs", () => {
+    test("empty list returns empty object", () => {
       assert.deepStrictEqual(mostBlogs([]), {});
     });
 
-    test('list with one author returns its unique author', () => {
+    test("list with one author returns its unique author", () => {
       const blogs = [helper.blogs[0]];
 
       const expectedOutput = {
@@ -53,9 +57,9 @@ describe('list helper', () => {
       assert.deepStrictEqual(mostBlogs(blogs), expectedOutput);
     });
 
-    test('returns object with author with most blogs', () => {
+    test("returns object with author with most blogs", () => {
       const expectedOutput = {
-        author: 'Robert C. Martin',
+        author: "Robert C. Martin",
         blogs: 3,
       };
 
@@ -63,12 +67,12 @@ describe('list helper', () => {
     });
   });
 
-  describe('most likes', () => {
-    test('empty list returns empty object', () => {
+  describe("most likes", () => {
+    test("empty list returns empty object", () => {
       assert.deepStrictEqual(mostLikes([]), {});
     });
 
-    test('list with one author returns its unique author', () => {
+    test("list with one author returns its unique author", () => {
       const blogs = [helper.blogs[0]];
 
       const expectedOutput = {
@@ -79,9 +83,9 @@ describe('list helper', () => {
       assert.deepStrictEqual(mostLikes(blogs), expectedOutput);
     });
 
-    test('returns object with author with most likes', () => {
+    test("returns object with author with most likes", () => {
       const expectedOutput = {
-        author: 'Edsger W. Dijkstra',
+        author: "Edsger W. Dijkstra",
         likes: 17,
       };
 
@@ -89,16 +93,16 @@ describe('list helper', () => {
     });
   });
 
-  describe('total likes', () => {
-    test('when list is empty return 0', () => {
+  describe("total likes", () => {
+    test("when list is empty return 0", () => {
       assert.strictEqual(totalLikes([]), 0);
     });
 
-    test('sum is correct', () => {
+    test("sum is correct", () => {
       assert.strictEqual(totalLikes(helper.blogs), 36);
     });
 
-    test('return blog likes when list has length 1', () => {
+    test("return blog likes when list has length 1", () => {
       const blogs = [helper.blogs[0]];
 
       assert.strictEqual(totalLikes(blogs), blogs[0].likes);
