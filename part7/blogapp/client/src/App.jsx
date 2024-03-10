@@ -1,74 +1,45 @@
 import { useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-
-import Blog from "./components/Blog";
+import Home from "./components/Home";
 import Login from "./components/Login";
-import NewBlog from "./components/NewBlog";
-import Notification from "./components/Notification";
-import Togglable from "./components/Togglable";
-import blogService from "./services/blogs";
-import { setNotification } from "./reducers/notificationReducer";
-import { initBlogs } from "./reducers/blogsReducer";
-import { initUser } from "./reducers/userReducer";
+import Users from "./components/Users";
 import "./App.css";
+import { initUser } from "./reducers/userReducer";
+import { initBlogs } from "./reducers/blogsReducer";
 
 function App() {
   const dispatch = useDispatch();
-  const blogs = useSelector(({ blogs }) => blogs);
-  const user = useSelector(({ user }) => user);
 
   useEffect(() => {
     dispatch(initUser());
     dispatch(initBlogs());
   }, []);
 
+  const user = useSelector(({ user }) => user);
+
   const handleLogout = () => {
     dispatch({ type: "user/logout" });
-  };
-
-  const createBlog = async (blog) => {
-    try {
-      const createdBlog = await blogService.create(blog, user.token);
-      dispatch({
-        type: "blogs/append",
-        payload: createdBlog,
-      });
-      dispatch(
-        setNotification(
-          `a new blog ${createdBlog.title} by ${createdBlog.author} added`,
-          "info",
-          5,
-        ),
-      );
-    } catch (error) {
-      dispatch(setNotification(error.response.data.error, "error", 5));
-    }
   };
 
   if (!user) {
     return (
       <div>
-        <Notification />
         <Login />
       </div>
     );
   }
 
   return (
-    <div>
-      <Notification />
+    <BrowserRouter>
       <h2>blogs</h2>
       <p>{`${user.name} logged in`}</p>
       <button onClick={handleLogout}>logout</button>
-      <Togglable label="new blog">
-        <NewBlog createBlog={createBlog} />
-      </Togglable>
-      {blogs
-        .toSorted((a, b) => b.likes - a.likes)
-        .map((blog) => (
-          <Blog key={blog.id} blog={blog} user={user} />
-        ))}
-    </div>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/users" element={<Users />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
