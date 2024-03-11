@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import Users from "./components/Users";
+import User from "./components/User";
 import "./App.css";
 import { initUser } from "./reducers/userReducer";
 import { initBlogs } from "./reducers/blogsReducer";
@@ -16,13 +17,13 @@ function App() {
     dispatch(initBlogs());
   }, []);
 
-  const user = useSelector(({ user }) => user);
+  const loggedUsser = useSelector(({ user }) => user);
 
   const handleLogout = () => {
     dispatch({ type: "user/logout" });
   };
 
-  if (!user) {
+  if (!loggedUsser) {
     return (
       <div>
         <Login />
@@ -33,11 +34,12 @@ function App() {
   return (
     <BrowserRouter>
       <h2>blogs</h2>
-      <p>{`${user.name} logged in`}</p>
+      <p>{`${loggedUsser.name} logged in`}</p>
       <button onClick={handleLogout}>logout</button>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/users" element={<Users />} />
+        <Route path="/users/:id" element={<User />} />
       </Routes>
     </BrowserRouter>
   );
