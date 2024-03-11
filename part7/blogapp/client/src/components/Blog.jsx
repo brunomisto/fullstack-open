@@ -1,8 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
-import { React } from "react";
+import { React, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { likeBlog, deleteBlog, initBlogs } from "../reducers/blogsReducer";
+import blogsService from "../services/blogs";
 import Like from "./Like";
 
 function Blog() {
@@ -12,6 +13,9 @@ function Blog() {
   const user = useSelector(({ user }) => user);
   const blogs = useSelector(({ blogs }) => blogs);
   const blog = blogs.find((b) => b.id === id);
+
+  const [commentInput, setCommentInput] = useState("");
+  const handleCommentInput = (event) => setCommentInput(event.target.value);
 
   if (blogs.length === 0) {
     dispatch(initBlogs());
@@ -26,6 +30,19 @@ function Blog() {
       dispatch(deleteBlog(blog, user.token));
       navigate("/");
     }
+  };
+
+  const handleComment = async (event) => {
+    event.preventDefault();
+    const comment = await blogsService.createComment(blog, commentInput);
+    dispatch({
+      type: "blogs/set",
+      payload: blogs.map((b) =>
+        // wow
+        b.id === id ? { ...b, comments: [...b.comments, comment] } : b,
+      ),
+    });
+    setCommentInput("");
   };
 
   if (!blog) {
@@ -48,6 +65,10 @@ function Blog() {
         </div>
       )}
       <h3>comments</h3>
+      <form onSubmit={handleComment}>
+        <input type="text" value={commentInput} onChange={handleCommentInput} />
+        <button type="submit">add comment</button>
+      </form>
       <ul>
         {blog.comments &&
           blog.comments.map((comment) => <li key={uuidv4()}>{comment}</li>)}
