@@ -20,6 +20,7 @@ const blogSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  comments: { type: [String], default: [] },
 });
 
 blogSchema.set("toJSON", {
