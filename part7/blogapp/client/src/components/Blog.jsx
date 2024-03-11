@@ -1,21 +1,20 @@
-import { React, useState } from "react";
-import { useDispatch } from "react-redux";
-import { likeBlog, deleteBlog } from "../reducers/blogsReducer";
+import { React } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { likeBlog, deleteBlog, initBlogs } from "../reducers/blogsReducer";
 import Like from "./Like";
 
-function Blog({ blog, user }) {
+function Blog() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { id } = useParams();
+  const user = useSelector(({ user }) => user);
+  const blogs = useSelector(({ blogs }) => blogs);
+  const blog = blogs.find((b) => b.id === id);
 
-  const [isShowing, setIsShowing] = useState(false);
-  const toggleIsShowing = () => {
-    setIsShowing(!isShowing);
-  };
-
-  const blogStyle = {
-    padding: 10,
-    border: "1px solid black",
-    marginBottom: 5,
-  };
+  if (blogs.length === 0) {
+    dispatch(initBlogs());
+  }
 
   const handleLike = () => {
     dispatch(likeBlog(blog));
@@ -24,37 +23,29 @@ function Blog({ blog, user }) {
   const handleDelete = async () => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
       dispatch(deleteBlog(blog, user.token));
+      navigate("/");
     }
   };
 
-  let content;
-  if (isShowing) {
-    content = (
-      <div>
-        <div>{blog.url}</div>
-        <div>{`likes ${blog.likes}`}</div>
-        <div>
-          <Like onClick={handleLike} />
-        </div>
-        {blog.user && blog.user.name}
-        {user.username === blog.user.username ? (
-          <div>
-            <button onClick={handleDelete}>delete</button>
-          </div>
-        ) : (
-          ""
-        )}
-      </div>
-    );
-  } else {
-    content = <div />;
+  if (!blog) {
+    return <div>blog not found</div>;
   }
 
   return (
-    <div className="blog" style={blogStyle}>
-      {`${blog.title} ${blog.author}`}
-      <button onClick={toggleIsShowing}>{isShowing ? "hide" : "view"}</button>
-      {content}
+    <div>
+      <h2>{`${blog.title} ${blog.author}`}</h2>
+      <div>
+        <a href={blog.url}>{blog.url}</a>
+      </div>
+      <div>
+        {blog.likes} likes <Like onClick={handleLike} />
+      </div>
+      <div>added by {blog.user && blog.user.name}</div>
+      {user.username === blog.user.username && (
+        <div>
+          <button onClick={handleDelete}>delete</button>
+        </div>
+      )}
     </div>
   );
 }

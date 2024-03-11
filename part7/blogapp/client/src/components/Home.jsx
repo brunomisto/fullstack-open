@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
-import Blog from "./Blog";
 import NewBlog from "./NewBlog";
 import Togglable from "./Togglable";
 import blogService from "../services/blogs";
@@ -10,6 +10,12 @@ function Home() {
   const dispatch = useDispatch();
   const user = useSelector(({ user }) => user);
   const blogs = useSelector(({ blogs }) => blogs);
+
+  const blogStyle = {
+    padding: 10,
+    border: "1px solid black",
+    marginBottom: 5,
+  };
 
   const createBlog = async (blog) => {
     try {
@@ -38,7 +44,9 @@ function Home() {
       {blogs
         .toSorted((a, b) => b.likes - a.likes)
         .map((blog) => (
-          <Blog key={blog.id} blog={blog} user={user} />
+          <div key={blog.id} style={blogStyle}>
+            <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+          </div>
         ))}
     </div>
   );

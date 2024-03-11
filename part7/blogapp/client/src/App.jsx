@@ -1,10 +1,12 @@
 import { useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import Users from "./components/Users";
 import User from "./components/User";
+import Blog from "./components/Blog";
+import Logout from "./components/Logout";
 import "./App.css";
 import { initUser } from "./reducers/userReducer";
 import { initBlogs } from "./reducers/blogsReducer";
@@ -17,13 +19,9 @@ function App() {
     dispatch(initBlogs());
   }, []);
 
-  const loggedUsser = useSelector(({ user }) => user);
+  const loggedUser = useSelector(({ user }) => user);
 
-  const handleLogout = () => {
-    dispatch({ type: "user/logout" });
-  };
-
-  if (!loggedUsser) {
+  if (!loggedUser) {
     return (
       <div>
         <Login />
@@ -34,12 +32,13 @@ function App() {
   return (
     <BrowserRouter>
       <h2>blogs</h2>
-      <p>{`${loggedUsser.name} logged in`}</p>
-      <button onClick={handleLogout}>logout</button>
+      <p>{`${loggedUser.name} logged in`}</p>
+      <Logout />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/users" element={<Users />} />
         <Route path="/users/:id" element={<User />} />
+        <Route path="/blogs/:id" element={<Blog />} />
       </Routes>
     </BrowserRouter>
   );

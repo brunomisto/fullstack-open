@@ -6,6 +6,7 @@ function User() {
   const { id } = useParams();
   const [user, setUser] = useState(null);
 
+  // This is really bad, because instead of passing all users as props (that would be bad) im actually making a additional request
   useEffect(() => {
     usersService
       .get(id)
