@@ -10,11 +10,9 @@ function User() {
     usersService
       .get(id)
       .then((fetchedUser) => {
-        console.log(fetchedUser);
         setUser(fetchedUser);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
         setUser("error");
       });
   }, []);
