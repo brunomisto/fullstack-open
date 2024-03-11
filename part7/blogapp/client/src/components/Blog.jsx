@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { React } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -46,6 +47,11 @@ function Blog() {
           <button onClick={handleDelete}>delete</button>
         </div>
       )}
+      <h3>comments</h3>
+      <ul>
+        {blog.comments &&
+          blog.comments.map((comment) => <li key={uuidv4()}>{comment}</li>)}
+      </ul>
     </div>
   );
 }

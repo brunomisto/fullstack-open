@@ -15,3 +15,11 @@
   border-color: green;
   color: green;
 }
+
+nav {
+  background-color: rgb(201, 201, 201);
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.2rem;
+  align-items: center;
+}
