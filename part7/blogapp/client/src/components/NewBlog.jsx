@@ -7,8 +7,8 @@ function NewBlog({ createBlog }) {
   const [url, setUrl] = useState("");
 
   return (
-    <div>
-      <h2>create new</h2>
+    <div className="text-lg">
+      <h2 className="text-2xl">create new</h2>
       <form
         onSubmit={async (event) => {
           event.preventDefault();
@@ -26,6 +26,7 @@ function NewBlog({ createBlog }) {
           <label>
             title:
             <input
+              className="ml-1 border border-black rounded-md"
               id="title"
               value={title}
               onChange={({ target }) => setTitle(target.value)}
@@ -37,6 +38,7 @@ function NewBlog({ createBlog }) {
           <label>
             author:
             <input
+              className="ml-1 border border-black rounded-md"
               id="author"
               value={author}
               onChange={({ target }) => setAuthor(target.value)}
@@ -48,6 +50,7 @@ function NewBlog({ createBlog }) {
           <label>
             url:
             <input
+              className="ml-1 border border-black rounded-md"
               id="url"
               value={url}
               onChange={({ target }) => setUrl(target.value)}
@@ -55,7 +58,12 @@ function NewBlog({ createBlog }) {
             />
           </label>
         </div>
-        <button type="submit">add</button>
+        <button
+          className="p-2 border border-slate-500 rounded-lg hover:bg-green-200"
+          type="submit"
+        >
+          add
+        </button>
       </form>
     </div>
   );

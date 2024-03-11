@@ -11,24 +11,31 @@ function Users() {
 
   return (
     <div>
-      <h2>Users</h2>
+      <h2 className="text-3xl">Users</h2>
       {users && (
-        <table>
+        <table className="text-white border border-collapse border-slate-500">
           <thead>
             <tr>
-              <td>&nbsp;</td>
-              <td>
+              <th className="border border-slate-400 bg-slate-600">user</th>
+              <th className="border border-slate-400 bg-slate-600">
                 <b>blogs created</b>
-              </td>
+              </th>
             </tr>
           </thead>
           <tbody>
             {users.map((user) => (
               <tr key={user.id}>
-                <td>
-                  <Link to={`/users/${user.id}`}>{user.name}</Link>
+                <td className="border border-slate-500 bg-slate-700">
+                  <Link
+                    className="text-sky-300 underline"
+                    to={`/users/${user.id}`}
+                  >
+                    {user.name}
+                  </Link>
                 </td>
-                <td>{user.blogs.length}</td>
+                <td className="border border-slate-500 bg-slate-700">
+                  {user.blogs.length}
+                </td>
               </tr>
             ))}
           </tbody>

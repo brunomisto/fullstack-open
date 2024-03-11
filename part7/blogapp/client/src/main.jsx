@@ -6,8 +6,10 @@ import store from "./store";
 import Notification from "./components/Notification";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <Provider store={store}>
-    <Notification />
-    <App />
-  </Provider>,
+  <div className="mx-20 mt-4">
+    <Provider store={store}>
+      <Notification />
+      <App />
+    </Provider>
+  </div>,
 );

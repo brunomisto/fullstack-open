@@ -10,7 +10,14 @@ function Logout() {
     navigate("/");
   };
 
-  return <button onClick={handleLogout}>logout</button>;
+  return (
+    <button
+      className="border border-black p-2 bg-red-400 rounded-lg"
+      onClick={handleLogout}
+    >
+      logout
+    </button>
+  );
 }
 
 export default Logout;

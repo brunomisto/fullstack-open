@@ -50,10 +50,12 @@ function Blog() {
   }
 
   return (
-    <div>
-      <h2>{`${blog.title} ${blog.author}`}</h2>
+    <div className="text-lg">
+      <h2 className="text-2xl">{`${blog.title} ${blog.author}`}</h2>
       <div>
-        <a href={blog.url}>{blog.url}</a>
+        <a className="text-sky-300 underline" href={blog.url}>
+          {blog.url}
+        </a>
       </div>
       <div>
         {blog.likes} likes <Like onClick={handleLike} />
@@ -61,15 +63,30 @@ function Blog() {
       <div>added by {blog.user && blog.user.name}</div>
       {user.username === blog.user.username && (
         <div>
-          <button onClick={handleDelete}>delete</button>
+          <button
+            className="p-2 bg-red-400 rounded-lg border border-black"
+            onClick={handleDelete}
+          >
+            delete
+          </button>
         </div>
       )}
       <h3>comments</h3>
       <form onSubmit={handleComment}>
-        <input type="text" value={commentInput} onChange={handleCommentInput} />
-        <button type="submit">add comment</button>
+        <input
+          className="border border-black rounded-lg"
+          type="text"
+          value={commentInput}
+          onChange={handleCommentInput}
+        />
+        <button
+          className="ml-3 px-2 border border-black rounded-lg"
+          type="submit"
+        >
+          add comment
+        </button>
       </form>
-      <ul>
+      <ul className="list-disc">
         {blog.comments &&
           blog.comments.map((comment) => <li key={uuidv4()}>{comment}</li>)}
       </ul>

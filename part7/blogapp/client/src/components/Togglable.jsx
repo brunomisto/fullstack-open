@@ -8,15 +8,23 @@ function Togglable({ label, children }) {
     return (
       <div>
         {children}
-        <button onClick={() => setVisible(false)}>cancel</button>
+        <button
+          onClick={() => setVisible(false)}
+          className="border border-slate-400 p-2 rounded-lg bg-red-200 hover:bg-red-400"
+        >
+          cancel
+        </button>
       </div>
     );
   }
 
   return (
-    <div>
-      <button onClick={() => setVisible(true)}>{label}</button>
-    </div>
+    <button
+      className="border border-slate-400 p-2 rounded-lg hover:bg-green-200"
+      onClick={() => setVisible(true)}
+    >
+      {label}
+    </button>
   );
 }
 

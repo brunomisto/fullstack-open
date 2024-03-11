@@ -24,12 +24,13 @@ function Login() {
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <h2>Login</h2>
+    <form className="flex flex-col items-center gap-2" onSubmit={handleLogin}>
+      <h2 className="text-4xl">Login</h2>
       <div>
-        <label>
+        <label className="flex gap-2">
           username
           <input
+            className="border border-black rounded-md"
             id="username"
             value={username}
             onChange={({ target }) => setUsername(target.value)}
@@ -37,9 +38,10 @@ function Login() {
         </label>
       </div>
       <div>
-        <label>
+        <label className="flex gap-2">
           password
           <input
+            className="border border-black rounded-md"
             id="password"
             value={password}
             onChange={({ target }) => setPassword(target.value)}
@@ -47,7 +49,11 @@ function Login() {
           />
         </label>
       </div>
-      <button id="login" type="submit">
+      <button
+        className="border border-black px-2 py-1 rounded-lg hover:bg-green-300"
+        id="login"
+        type="submit"
+      >
         Login
       </button>
     </form>

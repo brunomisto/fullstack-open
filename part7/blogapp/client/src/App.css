@@ -1,25 +1,3 @@
-.notification {
-  padding: 10px;
-  font-size: 1.5rem;
-  border: 4px solid;
-  border-radius: 5px;
-  background-color: lightgray;
-}
-
-.error {
-  border-color: red;
-  color: red;
-}
-
-.info {
-  border-color: green;
-  color: green;
-}
-
-nav {
-  background-color: rgb(201, 201, 201);
-  display: flex;
-  gap: 0.5rem;
-  padding: 0.2rem;
-  align-items: center;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

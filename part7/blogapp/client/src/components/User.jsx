@@ -28,9 +28,9 @@ function User() {
 
   return (
     <div>
-      <h2>{user.name}</h2>
-      <h3>added blogs</h3>
-      <ul>
+      <h2 className="text-3xl">{user.name}</h2>
+      <h3 className="text-xl">added blogs</h3>
+      <ul className="text-slate-300 bg-slate-700">
         {user.blogs.map((blog) => (
           <li key={blog.id}>{blog.title}</li>
         ))}

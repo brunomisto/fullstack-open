@@ -22,17 +22,13 @@ function App() {
   const loggedUser = useSelector(({ user }) => user);
 
   if (!loggedUser) {
-    return (
-      <div>
-        <Login />
-      </div>
-    );
+    return <Login />;
   }
 
   return (
     <BrowserRouter>
       <Navigation user={loggedUser} />
-      <h2>blog app</h2>
+      <h2 className="text-4xl">blog app</h2>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/users" element={<Users />} />

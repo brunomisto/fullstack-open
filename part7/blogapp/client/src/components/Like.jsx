@@ -1,6 +1,9 @@
 function Like({ onClick }) {
   return (
-    <button className="like-button" onClick={onClick}>
+    <button
+      className="px-2 bg-green-300 border border-black rounded-lg"
+      onClick={onClick}
+    >
       like
     </button>
   );

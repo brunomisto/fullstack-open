@@ -11,12 +11,6 @@ function Home() {
   const user = useSelector(({ user }) => user);
   const blogs = useSelector(({ blogs }) => blogs);
 
-  const blogStyle = {
-    padding: 10,
-    border: "1px solid black",
-    marginBottom: 5,
-  };
-
   const createBlog = async (blog) => {
     try {
       const createdBlog = await blogService.create(blog, user.token);
@@ -44,8 +38,13 @@ function Home() {
       {blogs
         .toSorted((a, b) => b.likes - a.likes)
         .map((blog) => (
-          <div key={blog.id} style={blogStyle}>
-            <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+          <div className="text-lg" key={blog.id}>
+            <Link
+              className="px-4 border border-black rounded-md"
+              to={`/blogs/${blog.id}`}
+            >
+              {blog.title}
+            </Link>
           </div>
         ))}
     </div>
